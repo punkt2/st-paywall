@@ -33,12 +33,14 @@ def require_auth(
     login_sidebar: bool = True,
 ):
     user_email = get_logged_in_user_email()
+    print("user email", user_email)
 
     if not user_email:
         show_login_button(
             text=login_button_text, color=login_button_color, sidebar=login_sidebar
         )
         st.stop()
+
     if payment_provider == "stripe":
         is_subscriber = user_email and is_active_subscriber(user_email)
     elif payment_provider == "bmac":
@@ -46,6 +48,7 @@ def require_auth(
     else:
         raise ValueError("payment_provider must be 'stripe' or 'bmac'")
 
+    print("is_subscriber", is_subscriber)
     if not is_subscriber:
         redirect_button(
             text="Subscribe now!",

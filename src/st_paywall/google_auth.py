@@ -44,7 +44,7 @@ def markdown_button(
 
     markdown(
         f"""
-    <a href="{url}" target="_blank">
+    <a href="{url}" target="_self">
         <div style="
             display: inline-flex;
             -webkit-box-align: center;

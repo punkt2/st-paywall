@@ -35,7 +35,7 @@ def redirect_button(
 
     st.sidebar.markdown(
         f"""
-    <a href="{button_url}" target="_blank">
+    <a href="{button_url}" target="_self">
         <div style="
             display: inline-block;
             padding: 0.5em 1em;
@@ -54,12 +54,16 @@ def redirect_button(
 def is_active_subscriber(email: str) -> bool:
     stripe.api_key = get_api_key()
     customers = stripe.Customer.list(email=email)
+    print("is_active_subscriber customers", customers)
     try:
         customer = customers.data[0]
     except IndexError:
         return False
 
     subscriptions = stripe.Subscription.list(customer=customer["id"])
+    print("is_active_subscriber subscriptions", subscriptions)
+
+    subscriptions = list(filter(lambda x: x['status'] != "paused", subscriptions))
     st.session_state.subscriptions = subscriptions
 
     return len(subscriptions) > 0
