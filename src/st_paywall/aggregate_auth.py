@@ -85,6 +85,7 @@ def optional_auth(
         )
         st.session_state.email = ""
         st.sidebar.markdown("")
+        return
 
     if not is_subscriber:
         redirect_button(
