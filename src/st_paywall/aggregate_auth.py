@@ -51,7 +51,7 @@ def require_auth(
     print("is_subscriber", is_subscriber)
     if not is_subscriber:
         redirect_button(
-            text="Subscribe now!",
+            text=st.secrets.get("subscribe_button_text", "Subscribe now!"),
             customer_email=user_email,
             payment_provider=payment_provider,
         )
@@ -88,7 +88,7 @@ def optional_auth(
 
     if not is_subscriber:
         redirect_button(
-            text="Subscribe now!", customer_email="", payment_provider=payment_provider
+            text=st.secrets.get("subscribe_button_text", "Subscribe now!"), customer_email="", payment_provider=payment_provider
         )
         st.sidebar.markdown("")
         st.session_state.user_subscribed = False
