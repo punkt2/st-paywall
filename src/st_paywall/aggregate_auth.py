@@ -54,6 +54,7 @@ def require_auth(
             text=st.secrets.get("subscribe_button_text", "Subscribe now!"),
             customer_email=user_email,
             payment_provider=payment_provider,
+            sidebar=login_sidebar,
         )
         st.session_state.user_subscribed = False
         st.stop()

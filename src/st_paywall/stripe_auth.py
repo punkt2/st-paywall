@@ -17,6 +17,7 @@ def redirect_button(
     customer_email: str,
     color="#FD504D",
     payment_provider: str = "stripe",
+    sidebar: bool = True,
 ):
     testing_mode = st.secrets.get("testing_mode", False)
     encoded_email = urllib.parse.quote(customer_email)
@@ -33,7 +34,9 @@ def redirect_button(
     else:
         raise ValueError("payment_provider must be 'stripe' or 'bmac'")
 
-    st.sidebar.markdown(
+    markdown = st.sidebar.markdown if sidebar else st.markdown
+
+    markdown(
         f"""
     <a href="{button_url}" target="_self">
         <div style="
