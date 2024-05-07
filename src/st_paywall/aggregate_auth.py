@@ -73,13 +73,6 @@ def optional_auth(
     login_sidebar: bool = True,
 ):
     user_email = get_logged_in_user_email()
-    if payment_provider == "stripe":
-        is_subscriber = user_email and is_active_subscriber(user_email)
-    elif payment_provider == "bmac":
-        is_subscriber = user_email and user_email in get_bmac_payers()
-    else:
-        raise ValueError("payment_provider must be 'stripe' or 'bmac'")
-
     if not user_email:
         show_login_button(
             text=login_button_text, color=login_button_color, sidebar=login_sidebar
@@ -87,6 +80,13 @@ def optional_auth(
         st.session_state.email = ""
         st.sidebar.markdown("")
         return
+
+    if payment_provider == "stripe":
+        is_subscriber = user_email and is_active_subscriber(user_email)
+    elif payment_provider == "bmac":
+        is_subscriber = user_email and user_email in get_bmac_payers()
+    else:
+        raise ValueError("payment_provider must be 'stripe' or 'bmac'")
 
     if not is_subscriber:
         redirect_button(
