@@ -11,6 +11,7 @@ def add_auth(
     login_button_text: str = "Login with Google",
     login_button_color: str = "#FD504D",
     login_sidebar: bool = True,
+    subscription_button_text: str = "Subscribe now!",
 
 ):
     if required:
@@ -18,12 +19,14 @@ def add_auth(
             login_button_text=login_button_text,
             login_sidebar=login_sidebar,
             login_button_color=login_button_color,
+            subscription_button_text=subscription_button_text,
         )
     else:
         optional_auth(
             login_button_text=login_button_text,
             login_sidebar=login_sidebar,
             login_button_color=login_button_color,
+            subscription_button_text=subscription_button_text,
         )
 
 
@@ -31,6 +34,7 @@ def require_auth(
     login_button_text: str = "Login with Google",
     login_button_color: str = "#FD504D",
     login_sidebar: bool = True,
+    subscription_button_text: str = "Subscribe now!",
 ):
     user_email = get_logged_in_user_email()
     print("user email", user_email)
@@ -51,7 +55,7 @@ def require_auth(
     print("is_subscriber", is_subscriber)
     if not is_subscriber:
         redirect_button(
-            text=st.secrets.get("subscribe_button_text", "Subscribe now!"),
+            text=subscription_button_text,
             customer_email=user_email,
             payment_provider=payment_provider,
             sidebar=login_sidebar,
@@ -71,6 +75,7 @@ def optional_auth(
     login_button_text: str = "Login with Google",
     login_button_color: str = "#FD504D",
     login_sidebar: bool = True,
+    subscription_button_text: str = "Subscribe now!",
 ):
     user_email = get_logged_in_user_email()
     if not user_email:
@@ -90,7 +95,7 @@ def optional_auth(
 
     if not is_subscriber:
         redirect_button(
-            text=st.secrets.get("subscribe_button_text", "Subscribe now!"), customer_email="", payment_provider=payment_provider
+            text=subscription_button_text, customer_email="", payment_provider=payment_provider
         )
         st.sidebar.markdown("")
         st.session_state.user_subscribed = False
