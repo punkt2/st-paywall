@@ -57,14 +57,15 @@ def redirect_button(
 def is_active_subscriber(email: str) -> bool:
     stripe.api_key = get_api_key()
     customers = stripe.Customer.list(email=email)
-    print("is_active_subscriber customers", customers)
+    print("is_active_subscriber customers", list(map(lambda x: x['email'], customers)))
+
     try:
         customer = customers.data[0]
     except IndexError:
         return False
 
     subscriptions = stripe.Subscription.list(customer=customer["id"])
-    print("is_active_subscriber subscriptions", subscriptions)
+    print("is_active_subscriber subscriptions", list(map(lambda x: x['status'], subscriptions)))
 
     subscriptions = list(filter(lambda x: x['status'] != "paused", subscriptions))
     st.session_state.subscriptions = subscriptions
