@@ -95,7 +95,7 @@ def optional_auth(
 
     if not is_subscriber:
         redirect_button(
-            text=subscription_button_text, customer_email="", payment_provider=payment_provider
+            text=subscription_button_text, customer_email=user_email, payment_provider=payment_provider
         )
         st.sidebar.markdown("")
         st.session_state.user_subscribed = False
