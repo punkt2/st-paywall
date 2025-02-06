@@ -15,5 +15,6 @@ dependencies = [
     "httpx-oauth",
     "pyjwt",
     "streamlit>=1.27.0",
+    "Authlib",
 ]
 requires-python = ">=3.8.0"

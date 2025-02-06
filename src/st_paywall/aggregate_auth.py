@@ -66,7 +66,7 @@ def require_auth(
         st.session_state.user_subscribed = True
 
     if st.sidebar.button("Logout", type="primary"):
-        del st.session_state.email
+        st.logout()
         del st.session_state.user_subscribed
         st.rerun()
 
@@ -82,7 +82,6 @@ def optional_auth(
         show_login_button(
             text=login_button_text, color=login_button_color, sidebar=login_sidebar
         )
-        st.session_state.email = ""
         st.sidebar.markdown("")
         return
 
@@ -103,8 +102,8 @@ def optional_auth(
     elif is_subscriber:
         st.session_state.user_subscribed = True
 
-    if st.session_state.email != "":
+    if st.experimental_user.get("email", "") != "":
         if st.sidebar.button("Logout", type="primary"):
-            del st.session_state.email
+            st.logout()
             del st.session_state.user_subscribed
             st.rerun()
