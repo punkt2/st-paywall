@@ -54,15 +54,34 @@ def redirect_button(
     )
 
 
+def get_customer(email: str):
+    stripe_customer_id = st.session_state.get("stripe_customer_id", None)
+    print("get_customer stripe_customer_id", stripe_customer_id)
+
+    if stripe_customer_id:
+        return stripe.Customer.retrieve(stripe_customer_id)
+
+    query = f"metadata['google']:'{email}'"
+    customers = stripe.Customer.list(email=email) or \
+                stripe.Customer.search(query=query)
+
+    print("get_customer customers", list(map(lambda x: x['email'], customers)))
+    if customers:
+        return customers.data[0]
+    else:
+        return None
+
+
 def is_active_subscriber(email: str) -> bool:
     stripe.api_key = get_api_key()
-    customers = stripe.Customer.list(email=email)
-    print("is_active_subscriber customers", list(map(lambda x: x['email'], customers)))
 
-    try:
-        customer = customers.data[0]
-    except IndexError:
+    customer = get_customer(email)
+    print("is_active_subscriber customer", customer)
+    if not customer:
         return False
+
+    st.session_state.stripe_customer_id = customer["id"]
+    st.session_state.stripe_customer_email = customer["email"]
 
     subscriptions = stripe.Subscription.list(customer=customer["id"])
     print("is_active_subscriber subscriptions", list(map(lambda x: x['status'], subscriptions)))
