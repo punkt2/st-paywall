@@ -102,7 +102,7 @@ def optional_auth(
     elif is_subscriber:
         st.session_state.user_subscribed = True
 
-    if st.experimental_user.get("email", "") != "":
+    if st.user.get("email", "") != "":
         if st.sidebar.button("Logout", type="secondary"):
             st.logout()
             del st.session_state.user_subscribed

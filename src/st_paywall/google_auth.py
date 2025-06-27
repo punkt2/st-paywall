@@ -46,4 +46,4 @@ def show_login_button(
 
 
 def get_logged_in_user_email() -> Optional[str]:
-    return st.experimental_user.get("email", None)
+    return st.user.get("email", None)
